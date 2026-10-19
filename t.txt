@@ -1,0 +1,340 @@
+EdRealm — Trainer Database, Trainer Search & QR Management (MVP)
+
+For the first version of EdRealm’s application, focus on just three modules:
+
+1. Trainer Database — Store and manage trainer profiles, skills, locations, and experience.
+2. Trainer Search — Find trainers based on location, subject expertise, and experience.
+3. QR Management — Generate QR codes for each college and training batch to collect student feedback.
+
+Exclude availability management, project history, payment tracking, and advanced automation from the MVP.
+
+1. Trainer Database
+
+A. Personal Information
+
+Field	Type	Example
+Trainer ID	Auto-generated	TR-0001
+Full Name	Text	Rahul Sharma
+Trainer Photo	Image Upload	JPEG/PNG (max 2 MB)
+Phone Number	Phone	+91 XXXXX XXXXX
+WhatsApp Number	Phone	+91 XXXXX XXXXX
+Email	Email	rahul@example.com
+Current City	Dropdown/Text	Hyderabad
+Current State	Dropdown	Telangana
+Country	Dropdown	India
+Preferred Work Locations	Multi-select	Hyderabad, Vijayawada, Bengaluru
+Training Mode	Multi-select	Offline, Online, Hybrid
+Total Experience	Number	6 years
+Training Experience	Number	4 years
+LinkedIn Profile	URL	LinkedIn URL
+Resume	File Upload	PDF
+Date Added	Auto-generated	17-10-2026
+
+B. Subject Expertise
+
+A trainer can have multiple skills. Store each skill as a separate record linked to the trainer.
+
+Field	Type	Example
+Skill ID	Auto-generated	SK-0001
+Trainer ID	Reference	TR-0001
+Trainer Type	Dropdown	Technical, Aptitude, Soft Skills, Domain Expert
+Domain	Dropdown	Programming & DSA
+Subject	Dropdown	Java DSA
+Additional Skills	Multi-select	Core Java, Advanced DSA
+Expertise Level	Dropdown	Beginner, Intermediate, Advanced, Expert
+Experience in Subject	Number	4 years
+Can Handle Large Batches	Yes/No	Yes
+Can Conduct Mock Interviews	Yes/No	Yes
+Technical Skills	Tags	Java, DSA, LeetCode
+
+Initial subject categories for EdRealm:
+
+* Programming: C, C++, Java, Python
+* DSA: Basic DSA, Advanced DSA, Competitive Programming, LeetCode
+* Full Stack: MERN, Java Full Stack, Python Full Stack
+* AI/ML: Artificial Intelligence, Machine Learning, Generative AI
+* Data: Data Analytics, Data Science, Data Visualization
+* Cybersecurity
+* Cloud Computing & DevOps
+* UI/UX Design
+* Embedded Systems & IoT
+* Aptitude & Logical Reasoning
+* Verbal Ability & Soft Skills
+* Company-Specific Placement Training
+
+Admins should be able to add new subjects and categories through the application.
+
+
+C. Trainer Profile Actions
+
+Admins should be able to perform the following actions on any trainer profile:
+
+* Edit Profile — Update personal information, contact details, location, and experience.
+* Edit Skills — Add, update, or remove subject expertise records.
+* Update Trainer Photo — Replace or remove the trainer's profile photo.
+* Update Resume — Upload a new resume or remove the existing one.
+* Change Trainer Type — Update the trainer's category (Technical, Aptitude, Soft Skills, etc.).
+* Activate/Deactivate Profile — Mark a trainer as active or inactive without deleting the record.
+* View Change History — See a log of all modifications made to the trainer's profile.
+
+All profile modifications should be recorded in the audit_logs table.
+
+⸻
+
+2. Trainer Search
+
+This module should allow admins to find suitable trainers using multiple filters.
+
+A. Search Filters
+
+Filter	Options
+Location	City
+State	Telangana, Andhra Pradesh, Karnataka, etc.
+Trainer Type	Technical, Aptitude, Soft Skills, Domain Expert
+Subject	Java DSA, Python DSA, AI/ML, etc.
+Domain	DSA, Full Stack, AI/ML, Cybersecurity, etc.
+Experience	Minimum years
+Training Experience	Minimum years
+Expertise Level	Intermediate, Advanced, Expert
+Training Mode	Online, Offline, Hybrid
+Travel Preference	Local, Willing to Travel
+Profile Status	Active trainers
+
+Allow admins to combine filters.
+
+B. Example Search
+
+Suppose EdRealm receives a requirement for Java DSA training in Hyderabad.
+
+The admin selects:
+
+* City: Hyderabad
+* State: Telangana
+* Subject: Java DSA
+* Minimum Experience: 3 years
+* Training Mode: Offline
+
+The application returns matching trainer profiles.
+
+The following records are illustrative examples.
+
+Trainer	Type	Location	Expertise	Experience
+Rahul Sharma	Technical	Hyderabad	Java DSA, Advanced DSA	6 years
+Priya Reddy	Technical	Warangal	Java DSA, Core Java	4 years
+Arjun Kumar	Technical	Vijayawada	Java DSA, Python DSA	5 years
+
+C. Search Result Actions
+
+Each trainer result should provide:
+
+* View Profile
+* View Trainer Photo
+* View Resume
+* View Skills
+* Copy Phone Number
+* Contact via WhatsApp
+* Edit Trainer
+* Activate/Deactivate Profile
+
+Also include:
+
+* Sorting by experience and location.
+* Pagination.
+* Export search results to Excel or CSV.
+* A count of matching trainers.
+* A clear indication of whether the trainer is local or from another city.
+
+Important: Searching for Hyderabad should return Hyderabad trainers first. Admins should also be able to expand the search to all of Telangana or search multiple states.
+
+⸻
+
+3. QR Management & Student Feedback
+
+The QR module should allow admins to create feedback QR codes for each college and training batch.
+
+I recommend supporting both:
+
+* College-level QR codes: A general feedback link for a college.
+* Batch-level QR codes: A dedicated link for a specific subject, trainer, and batch.
+
+Batch-level QR codes should be the primary option because they allow EdRealm to identify which trainer and training program students are rating.
+
+A. College Details
+
+Maintain a simple college database for QR management.
+
+Field	Type	Example
+College ID	Auto-generated	COL-0001
+College Name	Text	ABC Engineering College
+City	Text	Vijayawada
+State	Dropdown	Andhra Pradesh
+College Address	Text	Full address
+Contact Person	Text	TPO Name
+Contact Email	Email	tpo@example.com
+Contact Number	Phone	Phone number
+College Status	Dropdown	Active, Inactive
+
+This is only the basic college information required for the QR module—not a full college CRM.
+
+B. QR Code Configuration
+
+Field	Type	Example
+QR ID	Auto-generated	QR-0001
+College ID	Reference	COL-0001
+College Name	Auto-populated	ABC Engineering College
+Training Subject	Dropdown	Python DSA
+Trainer ID	Reference	TR-0001
+Trainer Name	Auto-populated	Rahul Sharma
+Batch Name	Text	CSE — Batch A
+Feedback Form URL	Auto-generated	Unique feedback link
+QR Code Image	Generated	PNG/SVG
+Created Date	Automatic	17-10-2026
+Created By	Admin ID	ADM-0001
+Feedback Status	Dropdown	Active, Disabled
+Total Responses	Calculated	120
+
+The college, subject, trainer, and batch should be associated with the QR code when it is created.
+
+Admins should not have to enter these details again for each student response.
+
+C. QR Management Actions
+
+Every QR record should support:
+
+* Generate QR Code.
+* Preview QR Code.
+* Download as PNG.
+* Download as SVG.
+* Print QR Code.
+* Copy Feedback Link.
+* Edit QR Details.
+* Activate/Disable QR Code.
+* View Total Responses.
+* View Feedback Results.
+* Export Feedback to Excel or CSV.
+
+When an admin disables a QR code, the associated form should stop accepting new submissions.
+
+D. Student Feedback Form
+
+When students scan the QR code, they should see a mobile-friendly feedback form.
+
+College, subject, trainer, and batch information should be automatically populated.
+
+Field	Type	Required
+College Name	Auto-populated	Yes
+Subject	Auto-populated	Yes
+Trainer Name	Auto-populated	Yes
+Batch Name	Auto-populated	Yes
+Student Name	Optional text	No
+Student ID	Optional text	No
+Trainer Knowledge	Rating: 1–5	Yes
+Concept Clarity	Rating: 1–5	Yes
+Problem-Solving Approach	Rating: 1–5	Yes
+Doubt Clarification	Rating: 1–5	Yes
+Communication Skills	Rating: 1–5	Yes
+Punctuality	Rating: 1–5	Yes
+Overall Satisfaction	Rating: 1–5	Yes
+Areas for Improvement	Text	No
+Additional Comments	Text	No
+Submission Date	Automatic timestamp	Yes
+
+You can make the feedback questions configurable so the admin can change the questions later without modifying the application.
+
+E. Feedback Dashboard
+
+The QR management dashboard should display:
+
+College	Subject	Trainer	Responses	Average Rating
+College A	Python DSA	Trainer A	120	4.5/5
+College A	Advanced DSA	Trainer B	95	4.7/5
+College B	Java Full Stack	Trainer C	80	4.2/5
+
+These are sample values.
+
+Provide filters for:
+
+* College
+* City and state
+* Subject
+* Trainer
+* Batch
+* Date range
+
+Also show the number of responses alongside average ratings. Restrict access to individual feedback records to authorized admins.
+
+⸻
+
+4. Minimum Database Tables for the MVP
+
+Use PostgreSQL or another relational database.
+
+You can build the MVP with these 9 tables:
+
+No.	Table	Purpose
+1	users	Admin accounts and login details
+2	trainers	Personal and professional information including photo
+3	trainer_skills	Subjects, domains, trainer type, and expertise
+4	colleges	College information
+5	feedback_qr_codes	QR records and linked college/batch information
+6	feedback_questions	Configurable feedback questions
+7	feedback_responses	Individual feedback submissions
+8	feedback_answers	Individual answers and ratings
+9	audit_logs	Records important administrative changes
+
+For location, store the city and state directly in the trainer profile for the MVP. You can normalize locations into separate tables later if necessary.
+
+The feedback_qr_codes table should contain the college, subject, trainer, and batch references needed to associate feedback with the correct training session.
+
+Use a secure, unique token for each QR code instead of exposing database IDs in public URLs.
+
+⸻
+
+5. MVP Application Navigation
+
+Keep the interface simple.
+
+Sidebar navigation:
+
+1. Dashboard
+2. Trainer Database
+3. Add Trainer
+4. Find Trainers
+5. College Database
+6. QR Management
+7. Feedback & Ratings
+8. Admin Settings
+
+Recommended dashboard cards
+
+* Total Trainers
+* Active Trainers
+* Total Colleges
+* Total QR Codes
+* Total Feedback Responses
+* Average Trainer Rating
+
+These counts should be calculated from the actual database.
+
+Final MVP Scope
+
+Feature	Include in MVP?
+Trainer registration and profile management	Yes
+Multiple subjects per trainer	Yes
+City and state filtering	Yes
+Subject and experience filtering	Yes
+
+Trainer search and shortlist	Yes
+College database	Yes
+College-specific QR generation	Yes
+Batch-specific QR generation	Yes
+Student feedback form	Yes
+Feedback dashboard and ratings	Yes
+Excel/CSV export	Yes
+Trainer availability calendar	No
+Training project history	No
+Payment tracking	No
+Automated trainer recommendations	No
+Advanced notifications	No
+
+Build these three modules first. The trainer database will help EdRealm find and manage trainers, the search module will reduce the effort involved in sourcing trainers for new requirements, and the QR module will provide structured feedback that can help evaluate trainer quality across colleges.

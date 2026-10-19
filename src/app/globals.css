@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+:root {
+  /* Surfaces & Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafbff;
+  --surface: #f1f5f9;
+  --surface-hover: #e2e8f0;
+
+  /* Borders & Outlines */
+  --border: #0f172a0f;
+  --border-hover: #0f172a1f;
+
+  /* Brand Accents */
+  --primary: #6366f1;
+  --primary-glow: #6366f133;
+  --secondary: #8b5cf6;
+  --accent: #10b981;
+
+  /* Typography / Text Colors */
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+
+  /* Glassmorphism & Layout */
+  --glass-blur: blur(16px);
+  --glass-shadow: 0 4px 24px 0 #0f172a0a;
+  --nav-height: 80px;
+  --container-max-width: 1280px;
+
+  /* Transitions */
+  --transition-smooth: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  --transition-spring: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@theme {
+  --color-bg-primary: var(--bg-primary);
+  --color-bg-secondary: var(--bg-secondary);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-primary: var(--primary);
+  --color-primary-glow: var(--primary-glow);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-border-subtle: var(--border);
+  --color-border-hover: var(--border-hover);
+  --radius-pill: 100px;
+  --radius-card: 24px;
+  --radius-card-lg: 28px;
+}
+
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism & Micro-interaction utility components */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 4px 24px 0 rgba(15, 23, 42, 0.04);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 24px;
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 3px, rgba(0, 0, 0, 0.03) 0px 4px 12px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 20px 40px -10px, rgba(0, 0, 0, 0.04) 0px 4px 12px;
+  transform: translateY(-4px);
+}
+
+.pill-button {
+  background-color: #000000;
+  color: #ffffff;
+  border-radius: 100px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 16px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.pill-button:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 8px 24px;
+  transform: translateY(-1px);
+}
+
+.pill-button-secondary {
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 100px;
+  padding: 12px 28px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  backdrop-filter: blur(12px);
+  transition: all 0.3s;
+}
+
+.pill-button-secondary:hover {
+  background: #ffffff;
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: rgba(99, 102, 241, 0.12) 0px 10px 30px -5px;
+}
+
+.kicker-label {
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
