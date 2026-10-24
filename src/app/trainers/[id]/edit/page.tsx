@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getTrainerById } from "@/actions/trainers";
 import { getCatalogHierarchy } from "@/actions/catalog";
 import { Navbar } from "@/components/navigation/Navbar";
-import { TrainerForm } from "@/components/trainers/TrainerForm";
+import { TrainerForm, type TrainerFormProps } from "@/components/trainers/TrainerForm";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +27,7 @@ export default async function EditTrainerPage({ params }: EditTrainerPageProps) 
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 py-8 sm:px-8">
         <TrainerForm 
-          initialData={trainer as any} 
+          initialData={trainer as unknown as TrainerFormProps["initialData"]} 
           categories={categories} 
           isEditing 
         />

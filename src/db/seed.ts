@@ -10,7 +10,7 @@ import {
   projectTrainers,
 } from "./schema";
 import bcrypt from "bcryptjs";
-import { eq, isNull } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { nanoid } from "nanoid";
 
 async function seed() {

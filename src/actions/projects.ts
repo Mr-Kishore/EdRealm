@@ -5,12 +5,6 @@ import {
   projects, 
   projectTrainers, 
   trainers, 
-  trainerSkills, 
-  masterSubjects, 
-  skillCategories, 
-  auditLogs,
-  type Project,
-  type ProjectTrainer
 } from "@/db/schema";
 import { 
   eq, 
@@ -263,7 +257,7 @@ export async function updateProject(id: string, input: UpdateProjectInput) {
     finalStartDate,
     finalEndDate,
     finalStatusOverride,
-    (validated.status || existing.status) as any
+    (validated.status || existing.status) as "upcoming" | "ongoing" | "completed"
   );
 
   const [updated] = await db

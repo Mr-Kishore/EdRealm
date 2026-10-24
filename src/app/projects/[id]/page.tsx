@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getProjectById } from "@/actions/projects";
 import { Navbar } from "@/components/navigation/Navbar";
 import { ProjectDashboardHeader } from "@/components/projects/ProjectDashboardHeader";
-import { AssignedTrainersSection } from "@/components/projects/AssignedTrainersSection";
+import { AssignedTrainersSection, type AssignedTrainersSectionProps } from "@/components/projects/AssignedTrainersSection";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +27,7 @@ export default async function ProjectDetailsPage({ params }: ProjectDetailsPageP
         <ProjectDashboardHeader project={project} />
 
         {/* Assigned Trainers List & Assign Modal */}
-        <AssignedTrainersSection project={project as any} />
+        <AssignedTrainersSection project={project as unknown as AssignedTrainersSectionProps["project"]} />
       </main>
     </div>
   );

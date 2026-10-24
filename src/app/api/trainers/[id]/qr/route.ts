@@ -25,7 +25,9 @@ export async function GET(
       return new NextResponse("Trainer not found", { status: 404 });
     }
 
-    const host = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+    const host =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
     const feedbackUrl = `${host}/feedback/${trainer.qrToken}`;
 
     const filename = `EdRealm-QR-${trainer.trainerCode}-${trainer.fullName.replace(/\s+/g, "_")}.${format}`;

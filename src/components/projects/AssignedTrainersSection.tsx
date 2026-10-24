@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { 
   Users, 
@@ -12,7 +13,6 @@ import {
   MessageSquare, 
   ExternalLink,
   MapPin,
-  Award,
   Loader2
 } from "lucide-react";
 import { toast } from "sonner";
@@ -28,7 +28,7 @@ type TrainerWithRelations = Trainer & {
   })[];
 };
 
-interface AssignedTrainersSectionProps {
+export interface AssignedTrainersSectionProps {
   project: Project & {
     assignedTrainers?: (ProjectTrainer & {
       trainer: TrainerWithRelations;
@@ -40,7 +40,7 @@ export function AssignedTrainersSection({ project }: AssignedTrainersSectionProp
   const router = useRouter();
   const [isAssignModalOpen, setIsAssignModalOpen] = useState(false);
   const [removingId, setRemovingId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const handleRemove = (trainerId: string, trainerName: string) => {
     if (!confirm(`Are you sure you want to remove ${trainerName} from this project?`)) {
@@ -53,7 +53,7 @@ export function AssignedTrainersSection({ project }: AssignedTrainersSectionProp
         await removeTrainerFromProject(project.id, trainerId);
         toast.success(`${trainerName} removed from project`);
         router.refresh();
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to remove trainer");
       } finally {
         setRemovingId(null);
@@ -104,9 +104,12 @@ export function AssignedTrainersSection({ project }: AssignedTrainersSectionProp
                     {/* Avatar */}
                     <div className="h-12 w-12 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center overflow-hidden shrink-0">
                       {t.photoUrl ? (
-                        <img
+                        <Image
                           src={t.photoUrl}
                           alt={t.fullName}
+                          width={48}
+                          height={48}
+                          unoptimized
                           className="h-full w-full object-cover"
                         />
                       ) : (
@@ -173,7 +176,7 @@ export function AssignedTrainersSection({ project }: AssignedTrainersSectionProp
                 {/* Primary Skills Tags */}
                 {t.skills && t.skills.length > 0 && (
                   <div className="flex flex-wrap gap-1.5 pt-2 border-t border-slate-200/60">
-                    {t.skills.slice(0, 4).map((s: any) => (
+                    {t.skills.slice(0, 4).map((s) => (
                       <span
                         key={s.id}
                         className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-white border border-slate-200 text-slate-700"

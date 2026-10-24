@@ -5,11 +5,8 @@ import {
   trainers,
   trainerSkills,
   masterSubjects,
-  skillCategories,
   auditLogs,
   feedbackResponses,
-  feedbackAnswers,
-  feedbackQuestions,
 } from "@/db/schema";
 import { eq, and, isNull, desc, sql, ilike, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";

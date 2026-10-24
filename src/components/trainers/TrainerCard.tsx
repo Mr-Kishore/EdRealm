@@ -47,9 +47,12 @@ export function TrainerCard({ trainer }: TrainerCardProps) {
             {/* Avatar */}
             <div className="w-14 h-14 rounded-2xl overflow-hidden bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border border-slate-200/80 flex items-center justify-center shrink-0 relative shadow-sm">
               {trainer.photoUrl ? (
-                <img
+                <Image
                   src={trainer.photoUrl}
                   alt={trainer.fullName}
+                  width={56}
+                  height={56}
+                  unoptimized
                   className="w-full h-full object-cover"
                 />
               ) : (

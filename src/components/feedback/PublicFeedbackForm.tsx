@@ -1,13 +1,11 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { 
   Star, 
   CheckCircle2, 
-  Sparkles, 
-  AlertCircle, 
   Loader2, 
-  Award, 
   School, 
   Send,
   MessageSquare
@@ -120,8 +118,9 @@ export function PublicFeedbackForm({
 
         setIsSubmitted(true);
         toast.success("Thank you! Your feedback has been recorded.");
-      } catch (err: any) {
-        toast.error(err.message || "Failed to submit feedback");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to submit feedback";
+        toast.error(message);
       }
     });
   };
@@ -174,9 +173,12 @@ export function PublicFeedbackForm({
         <div className="flex items-center gap-4">
           <div className="h-16 w-16 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center overflow-hidden shrink-0">
             {trainer.photoUrl ? (
-              <img
+              <Image
                 src={trainer.photoUrl}
                 alt={trainer.fullName}
+                width={64}
+                height={64}
+                unoptimized
                 className="h-full w-full object-cover"
               />
             ) : (

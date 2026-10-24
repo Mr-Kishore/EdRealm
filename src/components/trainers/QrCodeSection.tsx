@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Image from "next/image";
 import { 
   QrCode, 
   Copy, 
@@ -185,9 +186,12 @@ export function QrCodeSection({
         {/* QR Code Visual Card */}
         <div className="md:col-span-5 flex flex-col items-center">
           <div className="p-6 bg-white rounded-3xl border-2 border-slate-100 shadow-[0_10px_30px_rgba(0,0,0,0.05)] relative group">
-            <img
+            <Image
               src={`${qrImageApi}?format=svg&size=300`}
               alt={`QR for ${trainerName}`}
+              width={208}
+              height={208}
+              unoptimized
               className={`w-52 h-52 object-contain transition-opacity ${
                 !qrActive ? "opacity-30 grayscale" : "opacity-100"
               }`}

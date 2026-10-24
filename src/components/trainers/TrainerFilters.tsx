@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
-import { Search, MapPin, SlidersHorizontal, RotateCcw, Award, Star, Plane } from "lucide-react";
+import { Search, MapPin, RotateCcw, Award, Star, Plane } from "lucide-react";
 import { useCallback, useTransition } from "react";
 import type { SkillCategory, MasterSubject } from "@/db/schema";
 
@@ -13,7 +13,7 @@ export function TrainerFilters({ categories }: TrainerFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const currentQ = searchParams.get("q") || "";
   const currentCity = searchParams.get("city") || "";

@@ -1,16 +1,15 @@
 "use client";
 
 import { useState, useEffect, useTransition } from "react";
+import Image from "next/image";
 import { 
   X, 
   Search, 
   AlertTriangle, 
-  Check, 
   UserPlus, 
   Star, 
   MapPin, 
   Loader2,
-  Calendar,
   ShieldAlert
 } from "lucide-react";
 import { toast } from "sonner";
@@ -32,6 +31,8 @@ interface AssignTrainerModalProps {
   onAssigned: () => void;
 }
 
+type CandidateTrainer = Awaited<ReturnType<typeof getTrainersForProjectAssignment>>[number];
+
 export function AssignTrainerModal({
   projectId,
   projectName,
@@ -41,12 +42,12 @@ export function AssignTrainerModal({
   onAssigned,
 }: AssignTrainerModalProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [candidates, setCandidates] = useState<any[]>([]);
+  const [candidates, setCandidates] = useState<CandidateTrainer[]>([]);
   const [loading, setLoading] = useState(false);
   const [assigningId, setAssigningId] = useState<string | null>(null);
   const [roleMap, setRoleMap] = useState<Record<string, string>>({});
   const [confirmingConflictId, setConfirmingConflictId] = useState<string | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -59,7 +60,7 @@ export function AssignTrainerModal({
         if (active) {
           setCandidates(results);
         }
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to load candidate trainers");
       } finally {
         if (active) setLoading(false);
@@ -75,7 +76,7 @@ export function AssignTrainerModal({
 
   if (!isOpen) return null;
 
-  const handleAssign = (trainer: any, force = false) => {
+  const handleAssign = (trainer: CandidateTrainer, force = false) => {
     if (trainer.hasConflict && !force) {
       setConfirmingConflictId(trainer.id);
       return;
@@ -101,8 +102,9 @@ export function AssignTrainerModal({
           setConfirmingConflictId(trainer.id);
           toast.warning(res.message);
         }
-      } catch (err: any) {
-        toast.error(err.message || "Failed to assign trainer");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to assign trainer";
+        toast.error(message);
       } finally {
         setAssigningId(null);
       }
@@ -173,16 +175,19 @@ export function AssignTrainerModal({
                       {/* Avatar */}
                       <div className="h-10 w-10 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center overflow-hidden shrink-0">
                         {t.photoUrl ? (
-                          <img
+                          <Image
                             src={t.photoUrl}
                             alt={t.fullName}
+                            width={40}
+                            height={40}
+                            unoptimized
                             className="h-full w-full object-cover"
                           />
                         ) : (
                           <span className="text-xs font-bold text-slate-600">
                             {t.fullName
                               .split(" ")
-                              .map((n: string) => n[0])
+                              .map((n) => n[0])
                               .join("")
                               .substring(0, 2)
                               .toUpperCase()}
@@ -222,7 +227,7 @@ export function AssignTrainerModal({
                         {/* Skills preview */}
                         {t.skills && t.skills.length > 0 && (
                           <div className="flex flex-wrap gap-1 mt-2">
-                            {t.skills.slice(0, 3).map((s: any) => (
+                            {t.skills.slice(0, 3).map((s) => (
                               <span
                                 key={s.id}
                                 className="text-[10px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium"
@@ -298,7 +303,7 @@ export function AssignTrainerModal({
                         <span>Schedule Overlap Conflict Detected:</span>
                       </div>
                       <div className="pl-5 space-y-1 text-[11px]">
-                        {t.conflicts.map((c: any) => (
+                        {t.conflicts.map((c) => (
                           <div key={c.projectId}>
                             &bull; Committed to <strong className="font-semibold">{c.projectName}</strong> ({formatDate(c.startDate)} &rarr; {formatDate(c.endDate)}) in {c.place}
                           </div>

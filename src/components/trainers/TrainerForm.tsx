@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { 
   Plus, 
@@ -11,9 +11,6 @@ import {
   FileText, 
   Check, 
   Loader2, 
-  Sparkles, 
-  Award,
-  Link as LinkIcon
 } from "lucide-react";
 import { toast } from "sonner";
 import Link from "next/link";
@@ -24,7 +21,7 @@ import {
 import { createTrainer, updateTrainer } from "@/actions/trainers";
 import type { SkillCategory, MasterSubject, Trainer, TrainerSkill } from "@/db/schema";
 
-interface TrainerFormProps {
+export interface TrainerFormProps {
   initialData?: Trainer & {
     skills: (TrainerSkill & {
       subject: MasterSubject & {
@@ -62,8 +59,8 @@ export function TrainerForm({ initialData, categories, isEditing = false }: Trai
       ? initialData.skills.map((s) => ({
           categoryId: s.subject?.category?.id,
           subjectId: s.subjectId,
-          trainerType: s.trainerType as any,
-          expertiseLevel: s.expertiseLevel as any,
+          trainerType: s.trainerType as "Technical" | "Aptitude" | "Soft Skills" | "Domain Expert",
+          expertiseLevel: s.expertiseLevel as "Beginner" | "Intermediate" | "Advanced" | "Expert",
           subjectExperience: parseFloat(s.subjectExperience),
           canHandleLargeBatches: s.canHandleLargeBatches,
           canConductMockInterviews: s.canConductMockInterviews,
@@ -93,7 +90,7 @@ export function TrainerForm({ initialData, categories, isEditing = false }: Trai
     setValue,
     formState: { errors },
   } = useForm<CreateTrainerInput>({
-    resolver: zodResolver(CreateTrainerSchema) as any,
+    resolver: zodResolver(CreateTrainerSchema) as Resolver<CreateTrainerInput>,
     defaultValues,
   });
 
@@ -153,8 +150,9 @@ export function TrainerForm({ initialData, categories, isEditing = false }: Trai
             router.push(`/trainers/${res.trainerId}`);
           }
         }
-      } catch (err: any) {
-        toast.error(err.message || "Failed to save trainer profile");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to save trainer profile";
+        toast.error(message);
       }
     });
   };

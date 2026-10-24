@@ -1,26 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Calendar, 
   MapPin, 
   User, 
   Phone, 
   ArrowRight, 
-  Users, 
-  Clock,
-  Sparkles
+  Clock, 
+  Users 
 } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import type { Project } from "@/db/schema";
 
-interface ProjectWithTrainers extends Project {
+export interface ProjectWithTrainers extends Project {
   assignedTrainers?: {
     trainer: {
       id: string;
       trainerCode: string;
       fullName: string;
       photoUrl: string | null;
-      cachedRating: string;
-      phone: string;
+      cachedRating?: string;
+      phone?: string;
     };
   }[];
 }
@@ -135,16 +135,19 @@ export function ProjectCard({ project }: ProjectCardProps) {
             {/* Overlapping trainer avatar stack */}
             {project.assignedTrainers && project.assignedTrainers.length > 0 && (
               <div className="flex -space-x-2 overflow-hidden">
-                {project.assignedTrainers.slice(0, 4).map((item, idx) => (
+                {project.assignedTrainers.slice(0, 4).map((item) => (
                   <div
                     key={item.trainer.id}
                     title={item.trainer.fullName}
                     className="inline-block h-6 w-6 rounded-full ring-2 ring-white bg-indigo-100 text-[10px] font-bold text-indigo-700 flex items-center justify-center overflow-hidden"
                   >
                     {item.trainer.photoUrl ? (
-                      <img
+                      <Image
                         src={item.trainer.photoUrl}
                         alt={item.trainer.fullName}
+                        width={24}
+                        height={24}
+                        unoptimized
                         className="h-full w-full object-cover"
                       />
                     ) : (

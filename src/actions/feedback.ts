@@ -13,6 +13,7 @@ import {
 import { eq, and, isNull, asc, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { SubmitFeedbackSchema, type SubmitFeedbackInput } from "@/lib/validations/feedback";
+import type { QrFormConfig } from "./settings";
 
 /**
  * Fetch trainer and form questions for public feedback by QR token.
@@ -70,8 +71,16 @@ export async function getTrainerFeedbackContext(qrToken: string) {
     where: eq(systemSettings.key, "qr_form_config"),
   });
 
-  const formConfig = settingsRecord?.value
-    ? (settingsRecord.value as any)
+  const formConfig: QrFormConfig = settingsRecord?.value
+    ? {
+        formTitle: "Official Trainer Evaluation",
+        formSubtitle: "Please take 1 minute to share your honest class experience.",
+        improvementPrompt: "What could the trainer improve on?",
+        appreciationPrompt: "General Feedback / Appreciation",
+        thankYouHeading: "Feedback Submitted!",
+        thankYouMessage: "Thank you for rating your trainer. Your honest evaluation directly empowers high-quality training standards at EdRealm.",
+        ...(settingsRecord.value as unknown as Partial<QrFormConfig>),
+      }
     : {
         formTitle: "Official Trainer Evaluation",
         formSubtitle: "Please take 1 minute to share your honest class experience.",

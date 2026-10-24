@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { 
@@ -12,10 +12,8 @@ import {
   User, 
   Phone, 
   Mail, 
-  FileText, 
   Check, 
   Loader2, 
-  AlertTriangle,
   Clock
 } from "lucide-react";
 import { toast } from "sonner";
@@ -45,17 +43,16 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
     contactPersonEmail: initialData?.contactPersonEmail || "",
     notes: initialData?.notes || "",
     statusOverride: initialData?.statusOverride || false,
-    status: (initialData?.status as any) || "upcoming",
+    status: (initialData?.status as "upcoming" | "ongoing" | "completed" | undefined) || "upcoming",
   };
 
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors },
   } = useForm<CreateProjectInput>({
-    resolver: zodResolver(CreateProjectSchema) as any,
+    resolver: zodResolver(CreateProjectSchema) as Resolver<CreateProjectInput>,
     defaultValues,
   });
 
@@ -89,8 +86,9 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
             router.push(`/projects/${res.project.id}`);
           }
         }
-      } catch (err: any) {
-        toast.error(err.message || "Failed to save project");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to save project";
+        toast.error(message);
       }
     });
   };
@@ -314,7 +312,7 @@ export function ProjectForm({ initialData, isEditing = false }: ProjectFormProps
               </span>
             </label>
             <p className="text-xs text-slate-500 pl-7">
-              By default, project status updates automatically based on today's calendar date relative to start and end dates. Enable this to manually force a custom status.
+              By default, project status updates automatically based on today&apos;s calendar date relative to start and end dates. Enable this to manually force a custom status.
             </p>
 
             {watchStatusOverride && (

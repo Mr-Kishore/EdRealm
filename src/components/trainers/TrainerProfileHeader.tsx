@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { 
   ArrowLeft, 
   MapPin, 
@@ -14,9 +15,7 @@ import {
   Trash2, 
   Plane,
   Star,
-  ExternalLink,
-  ShieldCheck,
-  Power
+  ExternalLink
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatExperience, getInitials } from "@/lib/utils";
@@ -100,9 +99,12 @@ export function TrainerProfileHeader({ trainer }: TrainerProfileHeaderProps) {
             {/* Avatar */}
             <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl overflow-hidden bg-gradient-to-br from-indigo-500/10 to-violet-500/10 border-2 border-slate-200/80 flex items-center justify-center shrink-0 shadow-sm relative">
               {trainer.photoUrl ? (
-                <img
+                <Image
                   src={trainer.photoUrl}
                   alt={trainer.fullName}
+                  width={96}
+                  height={96}
+                  unoptimized
                   className="w-full h-full object-cover"
                 />
               ) : (

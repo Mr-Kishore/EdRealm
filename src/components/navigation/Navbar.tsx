@@ -1,12 +1,25 @@
 "use client";
 
+import { useTransition } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Users, FolderKanban, Settings, LayoutDashboard, Plus, ArrowUpRight } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { 
+  Users, 
+  FolderKanban, 
+  Settings, 
+  LayoutDashboard, 
+  Plus, 
+  LogOut,
+  Loader2 
+} from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { logoutUser } from "@/actions/auth";
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -14,6 +27,19 @@ export function Navbar() {
     { href: "/projects", label: "Projects", icon: FolderKanban },
     { href: "/settings", label: "Settings", icon: Settings },
   ];
+
+  const handleSignOut = () => {
+    startTransition(async () => {
+      try {
+        await logoutUser();
+        toast.success("Signed out successfully");
+        router.push("/login");
+        router.refresh();
+      } catch {
+        toast.error("Failed to sign out");
+      }
+    });
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full px-4 py-3 sm:px-8">
@@ -60,15 +86,30 @@ export function Navbar() {
           })}
         </nav>
 
-        {/* Right Action */}
-        <div className="flex items-center gap-3">
+        {/* Right Actions */}
+        <div className="flex items-center gap-2.5">
           <Link
             href="/trainers/new"
-            className="inline-flex items-center gap-2 px-5 py-2 bg-black text-white text-xs sm:text-sm font-bold rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-4 sm:px-5 py-2 bg-black text-white text-xs sm:text-sm font-bold rounded-full shadow-[0_4px_16px_rgba(0,0,0,0.1)] transition-all duration-300 hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] hover:-translate-y-0.5 active:translate-y-0"
           >
             <Plus className="w-4 h-4" />
-            <span>Add Trainer</span>
+            <span className="hidden sm:inline">Add Trainer</span>
           </Link>
+
+          <button
+            onClick={handleSignOut}
+            disabled={isPending}
+            title="Sign Out"
+            className="p-2 sm:px-3 sm:py-2 rounded-full border border-slate-200 hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 text-slate-600 text-xs font-semibold transition-all duration-200 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            aria-label="Sign Out"
+          >
+            {isPending ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <LogOut className="w-4 h-4" />
+            )}
+            <span className="hidden sm:inline">Logout</span>
+          </button>
         </div>
       </div>
     </header>

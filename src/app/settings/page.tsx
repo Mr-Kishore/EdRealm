@@ -1,7 +1,7 @@
 import { getQrFormSettings } from "@/actions/settings";
 import { Navbar } from "@/components/navigation/Navbar";
 import { QrFormConfigurator } from "@/components/settings/QrFormConfigurator";
-import { QrCode, Sparkles } from "lucide-react";
+import { QrCode } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 

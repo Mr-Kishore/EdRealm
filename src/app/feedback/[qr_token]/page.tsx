@@ -1,6 +1,4 @@
-import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Sparkles, AlertTriangle, ShieldX, CheckCircle } from "lucide-react";
+import { AlertTriangle, ShieldX, CheckCircle } from "lucide-react";
 import { getTrainerFeedbackContext } from "@/actions/feedback";
 import { PublicFeedbackForm } from "@/components/feedback/PublicFeedbackForm";
 
@@ -76,10 +74,10 @@ export default async function PublicFeedbackPage({ params }: PublicFeedbackPageP
       <main className="flex-1 px-4 py-6 sm:py-10">
         <PublicFeedbackForm
           qrToken={qr_token}
-          trainer={context.trainer as any}
+          trainer={context.trainer}
           questions={context.questions}
           projects={context.projects}
-          formConfig={(context as any).formConfig}
+          formConfig={context.formConfig}
         />
       </main>
 

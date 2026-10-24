@@ -1,20 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Users, 
   FolderKanban, 
   QrCode, 
   Star, 
   Sparkles, 
-  BookOpen, 
   ArrowRight, 
   Plus, 
   Calendar, 
   MapPin, 
   MessageSquareQuote,
-  Clock,
-  TrendingUp,
   Award,
-  CheckCircle2
 } from "lucide-react";
 import { getDashboardData } from "@/actions/dashboard";
 import { Navbar } from "@/components/navigation/Navbar";
@@ -250,7 +247,7 @@ export default async function DashboardPage() {
                       <div className="flex items-center gap-3">
                         <div className="h-10 w-10 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center overflow-hidden shrink-0">
                           {t.photoUrl ? (
-                            <img src={t.photoUrl} alt={t.fullName} className="h-full w-full object-cover" />
+                            <Image src={t.photoUrl} alt={t.fullName} width={40} height={40} unoptimized className="h-full w-full object-cover" />
                           ) : (
                             <span className="text-xs font-bold text-indigo-700">
                               {t.fullName

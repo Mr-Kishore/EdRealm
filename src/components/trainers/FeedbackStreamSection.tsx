@@ -1,10 +1,10 @@
-import { Star, MessageSquareQuote, CheckCircle2, User, Clock, ThumbsUp } from "lucide-react";
+import { Star, MessageSquareQuote, User, Clock } from "lucide-react";
 import type { FeedbackResponse, FeedbackAnswer, FeedbackQuestion } from "@/db/schema";
 
-interface FeedbackStreamSectionProps {
+export interface FeedbackStreamSectionProps {
   cachedRating: string;
   cachedReviewsCount: number;
-  cachedCriteriaScores: any;
+  cachedCriteriaScores: Record<string, unknown> | null | undefined;
   feedbackResponses: (FeedbackResponse & {
     answers: (FeedbackAnswer & {
       question: FeedbackQuestion;
@@ -82,7 +82,15 @@ export function FeedbackStreamSection({
             Criteria Breakdown
           </span>
           {Object.entries(criteriaLabels).map(([key, label]) => {
-            const rawScore = scores[key] !== undefined ? parseFloat(scores[key]) : overallRating;
+            const val = scores[key];
+            let rawScore = overallRating;
+            if (typeof val === "number") {
+              rawScore = val;
+            } else if (val && typeof val === "object" && "score" in val && typeof (val as { score: unknown }).score === "number") {
+              rawScore = (val as { score: number }).score;
+            } else if (typeof val === "string") {
+              rawScore = parseFloat(val);
+            }
             const score = isNaN(rawScore) ? 0 : rawScore;
             const percentage = Math.min(Math.max((score / 5) * 100, 0), 100);
 

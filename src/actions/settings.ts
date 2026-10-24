@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { feedbackQuestions, feedbackAnswers, systemSettings } from "@/db/schema";
-import { asc, desc, eq, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 export interface QrFormConfig {
@@ -37,7 +37,7 @@ export async function getQrFormSettings() {
   ]);
 
   const config: QrFormConfig = settingsRecord?.value 
-    ? { ...DEFAULT_QR_FORM_CONFIG, ...(settingsRecord.value as any) }
+    ? { ...DEFAULT_QR_FORM_CONFIG, ...(settingsRecord.value as unknown as Partial<QrFormConfig>) }
     : DEFAULT_QR_FORM_CONFIG;
 
   return {
@@ -56,7 +56,7 @@ export async function updateQrFormConfig(input: Partial<QrFormConfig>) {
 
   const merged = {
     ...DEFAULT_QR_FORM_CONFIG,
-    ...(current?.value ? (current.value as any) : {}),
+    ...(current?.value ? (current.value as unknown as Partial<QrFormConfig>) : {}),
     ...input,
   };
 

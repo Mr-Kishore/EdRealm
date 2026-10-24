@@ -1,18 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { 
   Star, 
   MapPin, 
-  Briefcase, 
   Phone, 
   MessageSquare, 
   FileText, 
-  ExternalLink,
-  Plane,
-  ArrowRight,
-  Award,
-  Globe
+  Plane, 
+  ArrowRight
 } from "lucide-react";
 import { formatExperience, getInitials } from "@/lib/utils";
 import type { TrainerWithRelations } from "./TrainerCard";
@@ -56,9 +53,12 @@ export function TrainerListView({ trainers }: TrainerListViewProps) {
                       {/* Avatar */}
                       <div className="w-11 h-11 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center overflow-hidden shrink-0 shadow-xs">
                         {trainer.photoUrl ? (
-                          <img
+                          <Image
                             src={trainer.photoUrl}
                             alt={trainer.fullName}
+                            width={44}
+                            height={44}
+                            unoptimized
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -246,7 +246,6 @@ export function TrainerListView({ trainers }: TrainerListViewProps) {
       <div className="lg:hidden divide-y divide-slate-100">
         {trainers.map((trainer) => {
           const rating = parseFloat(trainer.cachedRating || "0");
-          const reviewCount = trainer.cachedReviewsCount || 0;
           const initials = getInitials(trainer.fullName);
           const cleanPhone = trainer.whatsapp.replace(/[^0-9]/g, "");
           const waUrl = `https://wa.me/${cleanPhone.startsWith("91") ? cleanPhone : `91${cleanPhone}`}`;
@@ -257,9 +256,12 @@ export function TrainerListView({ trainers }: TrainerListViewProps) {
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center shrink-0">
                     {trainer.photoUrl ? (
-                      <img
+                      <Image
                         src={trainer.photoUrl}
                         alt={trainer.fullName}
+                        width={40}
+                        height={40}
+                        unoptimized
                         className="w-full h-full object-cover rounded-xl"
                       />
                     ) : (

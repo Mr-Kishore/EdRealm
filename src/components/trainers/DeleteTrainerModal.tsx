@@ -39,8 +39,9 @@ export function DeleteTrainerModal({
         toast.success(`Trainer ${trainerCode} deleted successfully`);
         onClose();
         router.push("/trainers");
-      } catch (err: any) {
-        toast.error(err.message || "Failed to delete trainer");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to delete trainer";
+        toast.error(message);
       }
     });
   };

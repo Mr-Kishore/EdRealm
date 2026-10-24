@@ -5,6 +5,7 @@ import { getCatalogHierarchy } from "@/actions/catalog";
 import { Navbar } from "@/components/navigation/Navbar";
 import { TrainerListView } from "@/components/trainers/TrainerListView";
 import { TrainerFilters } from "@/components/trainers/TrainerFilters";
+import type { TrainerWithRelations } from "@/components/trainers/TrainerCard";
 
 export const dynamic = "force-dynamic";
 
@@ -117,7 +118,7 @@ export default async function TrainersPage({ searchParams }: TrainersPageProps) 
             </div>
           </div>
         ) : (
-          <TrainerListView trainers={trainers as any} />
+          <TrainerListView trainers={trainers as unknown as TrainerWithRelations[]} />
         )}
 
         {/* Pagination Controls */}

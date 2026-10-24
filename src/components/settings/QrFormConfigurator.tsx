@@ -8,24 +8,16 @@ import {
   Loader2, 
   MoveUp, 
   MoveDown, 
-  Eye, 
   HelpCircle, 
   FileText, 
   Smartphone, 
   Save, 
-  Star, 
-  AlertCircle,
-  ToggleLeft,
-  ToggleRight,
-  ShieldCheck,
-  CheckCircle2,
-  Sparkles
+  Star
 } from "lucide-react";
 import { toast } from "sonner";
 import { 
   updateQrFormConfig, 
   createFeedbackQuestion, 
-  updateFeedbackQuestion, 
   toggleFeedbackQuestion, 
   reorderFeedbackQuestions, 
   deleteFeedbackQuestion,
@@ -62,8 +54,9 @@ export function QrFormConfigurator({
         if (res.success) {
           toast.success("QR Feedback Form details saved successfully!");
         }
-      } catch (err: any) {
-        toast.error(err.message || "Failed to save form details");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to save form details";
+        toast.error(message);
       }
     });
   };
@@ -89,8 +82,9 @@ export function QrFormConfigurator({
           setIsAddingQuestion(false);
           toast.success("New evaluation question added successfully!");
         }
-      } catch (err: any) {
-        toast.error(err.message || "Failed to add question");
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : "Failed to add question";
+        toast.error(message);
       }
     });
   };
@@ -110,7 +104,7 @@ export function QrFormConfigurator({
             ? "Question enabled on student QR review form"
             : "Question disabled from student QR review form"
         );
-      } catch (err: any) {
+      } catch {
         // Rollback on error
         setQuestions((prev) =>
           prev.map((q) => (q.id === id ? { ...q, isActive: currentStatus } : q))
@@ -135,7 +129,7 @@ export function QrFormConfigurator({
       try {
         await reorderFeedbackQuestions(newQuestions.map((q) => q.id));
         toast.success("Question order updated");
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to reorder questions");
       }
     });
@@ -161,7 +155,7 @@ export function QrFormConfigurator({
             toast.success("Question deleted permanently");
           }
         }
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to delete question");
       }
     });

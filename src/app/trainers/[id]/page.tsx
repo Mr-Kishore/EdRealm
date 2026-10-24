@@ -4,16 +4,14 @@ import {
   Award, 
   FolderKanban, 
   CheckCircle2, 
-  Plus, 
   Layers, 
-  Users, 
   Calendar 
 } from "lucide-react";
 import { getTrainerById } from "@/actions/trainers";
 import { Navbar } from "@/components/navigation/Navbar";
 import { TrainerProfileHeader } from "@/components/trainers/TrainerProfileHeader";
 import { QrCodeSection } from "@/components/trainers/QrCodeSection";
-import { FeedbackStreamSection } from "@/components/trainers/FeedbackStreamSection";
+import { FeedbackStreamSection, type FeedbackStreamSectionProps } from "@/components/trainers/FeedbackStreamSection";
 import { formatExperience } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -127,8 +125,8 @@ export default async function TrainerProfilePage({ params }: TrainerProfilePageP
         <FeedbackStreamSection
           cachedRating={trainer.cachedRating}
           cachedReviewsCount={trainer.cachedReviewsCount}
-          cachedCriteriaScores={trainer.cachedCriteriaScores}
-          feedbackResponses={trainer.feedbackResponses as any}
+          cachedCriteriaScores={trainer.cachedCriteriaScores as Record<string, unknown>}
+          feedbackResponses={trainer.feedbackResponses as unknown as FeedbackStreamSectionProps["feedbackResponses"]}
         />
 
         {/* SECTION 4: Project Deployments */}

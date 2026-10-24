@@ -7,16 +7,11 @@ import {
   ArrowLeft, 
   MapPin, 
   Calendar, 
-  Clock, 
   User, 
   Phone, 
   Mail, 
   Edit, 
   Trash2, 
-  CheckCircle2, 
-  AlertCircle,
-  Clock3,
-  Loader2,
   FileText
 } from "lucide-react";
 import { toast } from "sonner";
@@ -42,7 +37,7 @@ export function ProjectDashboardHeader({ project }: ProjectDashboardHeaderProps)
       try {
         await overrideProjectStatus(project.id, newStatus, true);
         toast.success(`Project status manually overridden to ${newStatus}`);
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to override project status");
       }
     });
@@ -51,9 +46,9 @@ export function ProjectDashboardHeader({ project }: ProjectDashboardHeaderProps)
   const handleResetAutoStatus = () => {
     startTransition(async () => {
       try {
-        await overrideProjectStatus(project.id, project.status as any, false);
+        await overrideProjectStatus(project.id, project.status as "upcoming" | "ongoing" | "completed", false);
         toast.success("Project status reset to automatic calendar calculation");
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to reset project status");
       }
     });
@@ -65,7 +60,7 @@ export function ProjectDashboardHeader({ project }: ProjectDashboardHeaderProps)
         await deleteProject(project.id);
         toast.success("Project deleted successfully");
         router.push("/projects");
-      } catch (err: any) {
+      } catch {
         toast.error("Failed to delete project");
       }
     });

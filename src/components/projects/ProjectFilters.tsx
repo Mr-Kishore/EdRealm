@@ -19,7 +19,7 @@ export function ProjectFilters({ stats }: ProjectFiltersProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   const currentStatus = searchParams.get("status") || "all";
   const [searchTerm, setSearchTerm] = useState(searchParams.get("q") || "");

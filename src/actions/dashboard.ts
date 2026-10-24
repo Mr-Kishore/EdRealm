@@ -5,8 +5,7 @@ import {
   trainers, 
   projects, 
   masterSubjects, 
-  feedbackResponses, 
-  feedbackAnswers 
+  feedbackResponses
 } from "@/db/schema";
 import { eq, and, isNull, desc, asc, sql } from "drizzle-orm";
 
