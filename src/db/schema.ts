@@ -1,5 +1,6 @@
 import {
   pgTable,
+  pgSequence,
   uuid,
   varchar,
   text,
@@ -16,6 +17,9 @@ import {
   index,
 } from "drizzle-orm/pg-core";
 import { relations, sql } from "drizzle-orm";
+
+// 0. Sequences
+export const trainerCodeSeq = pgSequence("trainer_code_seq", { startWith: 1 });
 
 // 1. Enums
 export const userRoleEnum = pgEnum("user_role", [

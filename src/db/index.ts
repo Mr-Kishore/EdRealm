@@ -1,3 +1,11 @@
+if (typeof process.loadEnvFile === "function") {
+  try {
+    process.loadEnvFile();
+  } catch {
+    // Ignore if .env doesn't exist (e.g. on Vercel where process.env is injected)
+  }
+}
+
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 import * as schema from "./schema";

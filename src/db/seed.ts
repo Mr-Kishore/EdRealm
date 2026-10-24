@@ -1,3 +1,11 @@
+if (typeof process.loadEnvFile === "function") {
+  try {
+    process.loadEnvFile();
+  } catch {
+    // Ignore if file doesn't exist
+  }
+}
+
 import { db, pool } from "./index";
 import {
   users,

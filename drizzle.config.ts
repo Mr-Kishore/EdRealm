@@ -1,5 +1,13 @@
 import { defineConfig } from "drizzle-kit";
 
+if (typeof process.loadEnvFile === "function") {
+  try {
+    process.loadEnvFile();
+  } catch {
+    // Ignore if file doesn't exist
+  }
+}
+
 export default defineConfig({
   schema: "./src/db/schema.ts",
   out: "./src/db/migrations",
